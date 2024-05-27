@@ -42,5 +42,33 @@ To integrate a patient view feature in the clinical system application, enabling
 
 doctor can write the prescribtion digitally and send it to the patient directly to his mobile application.
 
+  ## Key Features:
+
+ • Login page
+
+  <img width="932" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/7aa3e3f4-6c0b-4008-97e9-f4424cc4caff">                                    <img width="791" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/9bf76361-8b8a-43fa-85b0-7006a91fcd76">
+
+
+ • Patient List  
+
+<img width="932" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/f49d091b-d46c-4978-b3ef-74346da75360">                                  <img width="785" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/fa896a05-10a8-466f-b6f1-55f3507a515a">
+
+ • Registeration an Appointement 
+ 
+<img width="781" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/637eb22b-6ef6-4a3e-8f64-fb3a37a9de2c">
+
+
+
+• Prescribtions
+  
+
+  <img width="945" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/70965366-9157-45ac-b835-3fdb179a1fd8">
+
+
+• Treatment Plan 
+
+<img width="934" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/f9c99ef1-7338-4eeb-8807-1a2d4846225d">
+
+
 
 

@@ -51,7 +51,9 @@ doctor can write the prescribtion digitally and send it to the patient directly 
 
  • Patient List  
 
-<img width="932" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/f49d091b-d46c-4978-b3ef-74346da75360">                                  <img width="785" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/fa896a05-10a8-466f-b6f1-55f3507a515a">
+<img width="932" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/f49d091b-d46c-4978-b3ef-74346da75360">
+
+<img width="785" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/fa896a05-10a8-466f-b6f1-55f3507a515a">
 
  • Registeration an Appointement 
  

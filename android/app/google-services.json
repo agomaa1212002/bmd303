@@ -1,0 +1,124 @@
+{
+  "project_info": {
+    "project_number": "951482436258",
+    "project_id": "nutrition-app-8dbf7",
+    "storage_bucket": "nutrition-app-8dbf7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951482436258:android:d228e71d48e44a906765fb",
+        "android_client_info": {
+          "package_name": "com.example.bmd303newst"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFIaeAi9GGIvYeSRojVT6Dw00pTe7DHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951482436258:android:2e7eed4432b9c2b36765fb",
+        "android_client_info": {
+          "package_name": "com.example.neutrition_sqlite"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFIaeAi9GGIvYeSRojVT6Dw00pTe7DHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951482436258:android:913250280e9bb6906765fb",
+        "android_client_info": {
+          "package_name": "com.example.new_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFIaeAi9GGIvYeSRojVT6Dw00pTe7DHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951482436258:android:3c989d94772395a76765fb",
+        "android_client_info": {
+          "package_name": "com.example.nurtition_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFIaeAi9GGIvYeSRojVT6Dw00pTe7DHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951482436258:android:55befd330b5e4d7d6765fb",
+        "android_client_info": {
+          "package_name": "com.example.nutration"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFIaeAi9GGIvYeSRojVT6Dw00pTe7DHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951482436258:android:596ca2a13b3e164f6765fb",
+        "android_client_info": {
+          "package_name": "com.mycompany.crmapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFIaeAi9GGIvYeSRojVT6Dw00pTe7DHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

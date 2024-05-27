@@ -44,7 +44,10 @@ doctor can write the prescribtion digitally and send it to the patient directly 
 
   ## Key Features:
 
- • Login page
+ •	authentication
+
+![image](https://github.com/agomaa1212002/bmd303/assets/102023114/776e8647-fb15-4912-874e-9c637f521d09)
+
 
   <img width="932" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/7aa3e3f4-6c0b-4008-97e9-f4424cc4caff">                                    <img width="791" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/9bf76361-8b8a-43fa-85b0-7006a91fcd76">
 
@@ -55,6 +58,9 @@ doctor can write the prescribtion digitally and send it to the patient directly 
 
 <img width="785" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/fa896a05-10a8-466f-b6f1-55f3507a515a">
 
+![image](https://github.com/agomaa1212002/bmd303/assets/102023114/50d133f2-9e22-477b-a3ed-9b4d5f3d571f)
+
+
  • Registeration an Appointement 
 
  <img width="790" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/0179294f-12c6-42c7-8755-99112a54863a">
@@ -62,7 +68,15 @@ doctor can write the prescribtion digitally and send it to the patient directly 
  
 <img width="781" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/637eb22b-6ef6-4a3e-8f64-fb3a37a9de2c">
 
+![image](https://github.com/agomaa1212002/bmd303/assets/102023114/f7ccbf9c-cd60-4b28-b0af-f128bfea2aa9)
 
+![image](https://github.com/agomaa1212002/bmd303/assets/102023114/51c8e516-ca62-4907-976b-bb012f6aa1ca)
+
+![image](https://github.com/agomaa1212002/bmd303/assets/102023114/07a7daf2-97f9-46b9-96dc-9ac1d1347626)
+
+•	Integration patient view
+
+![image](https://github.com/agomaa1212002/bmd303/assets/102023114/dca131e8-e587-4d5c-a02b-1c6a524510a0)
 
 • Prescribtions
   

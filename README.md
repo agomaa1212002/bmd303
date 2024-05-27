@@ -35,5 +35,12 @@ To integrate a patient view feature in the clinical system application, enabling
    ## Dashboard:
 
   Displays an overview of patient-specific data.
-  Includes health metrics, treatment plans, and other relevant information.
+  Includes charts, treatment plans, and other relevant information.
+
+
+• Prescribtions
+
+doctor can write the prescribtion digitally and send it to the patient directly to his mobile application.
+
+
 

@@ -58,31 +58,29 @@ doctor can write the prescribtion digitally and send it to the patient directly 
 
 <img width="785" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/fa896a05-10a8-466f-b6f1-55f3507a515a">
 
-![image](https://github.com/agomaa1212002/bmd303/assets/102023114/50d133f2-9e22-477b-a3ed-9b4d5f3d571f)
+<img width="785" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/50d133f2-9e22-477b-a3ed-9b4d5f3d571f">
 
 
  • Registeration an Appointement 
 
  <img width="790" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/0179294f-12c6-42c7-8755-99112a54863a">
  
- 
 <img width="781" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/637eb22b-6ef6-4a3e-8f64-fb3a37a9de2c">
 
-![image](https://github.com/agomaa1212002/bmd303/assets/102023114/f7ccbf9c-cd60-4b28-b0af-f128bfea2aa9)
+<img width="781" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/f7ccbf9c-cd60-4b28-b0af-f128bfea2aa9">
 
-![image](https://github.com/agomaa1212002/bmd303/assets/102023114/51c8e516-ca62-4907-976b-bb012f6aa1ca)
+<img width="781" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/51c8e516-ca62-4907-976b-bb012f6aa1ca">
 
-![image](https://github.com/agomaa1212002/bmd303/assets/102023114/07a7daf2-97f9-46b9-96dc-9ac1d1347626)
+<img width="781" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/07a7daf2-97f9-46b9-96dc-9ac1d1347626">
+
 
 •	Integration patient view
 
-![image](https://github.com/agomaa1212002/bmd303/assets/102023114/dca131e8-e587-4d5c-a02b-1c6a524510a0)
+<img width="781" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/dca131e8-e587-4d5c-a02b-1c6a524510a0">
 
 • Prescribtions
-  
 
   <img width="945" alt="image" src="https://github.com/agomaa1212002/bmd303/assets/102023114/70965366-9157-45ac-b835-3fdb179a1fd8">
-
 
 • Treatment Plan 
 

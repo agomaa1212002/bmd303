@@ -23,7 +23,7 @@ class MyAppplan extends StatelessWidget {
                   "Baked salmon with quinoa and steamed asparagus (450 calories)"
                 ],
                 totalCalories: 1600,
-                color: Color(0xFF4e5ae8),
+                color: Colors.teal,
               ),
               PlanCard(
                 dietCode: "DIET1800",
@@ -35,7 +35,7 @@ class MyAppplan extends StatelessWidget {
                   "Stir-fried tofu with mixed vegetables and brown rice (650 calories)"
                 ],
                 totalCalories: 1800,
-                color: Color(0xFF4e5ae8),
+                color: Colors.teal,
               ),
               PlanCard(
                 dietCode: "DIET2000",
@@ -46,7 +46,7 @@ class MyAppplan extends StatelessWidget {
                   "Rice cakes with peanut butter (200 calories)",
                   "Grilled steak with sweet potato wedges and roasted Brussels sprouts (750 calories)"],
                 totalCalories: 2000,
-                color: Color(0xFF4e5ae8),
+                color: Colors.teal,
               ),
             ],
           ),
@@ -163,7 +163,7 @@ class _PlanCardState extends State<PlanCard> {
                 child: Text('Save'),
                 style: ElevatedButton.styleFrom(
 
-                    backgroundColor: Colors.blueAccent,
+                    backgroundColor: Colors.teal,
                     foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     textStyle: TextStyle(

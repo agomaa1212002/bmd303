@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../screens/app.dart';
+import '../screens/login.dart';
+import '../screens/profilepage.dart';
+import 'geminipage.dart';
+
+void main() {
+  runApp(PrescriptionApp());
+}
 
 class PrescriptionApp extends StatelessWidget {
   @override
@@ -10,7 +18,7 @@ class PrescriptionApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Prescription App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       home: PrescriptionScreen(),
     );
@@ -62,7 +70,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
       String jsonPrescription = jsonEncode(prescription);
 
       // Your authentication token (should be stored securely)
-      String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiamFuYWFtZXJtb2hhbWVkIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJkODM4ZTQyZC0zZjdkLTQ2OTEtYWUxNy01ODUwNDM4NGRhZjMiLCJqdGkiOiIxNGE0OTkxZC0zYmZhLTQzMGItOWU4Zi1jMzBmZjRjNjU4YjciLCJleHAiOjE3MTY2Nzk1MTUsImlzcyI6ImFwaS5zaW1wbGlmaWVyLm5ldCIsImF1ZCI6ImFwaS5zaW1wbGlmaWVyLm5ldCJ9.CEJDQ0aVFqKatKlSi94gxiRz2Bly0bwkKciTIjsmMtY'; // Shortened for brevity
+      String token = 'your_auth_token_here'; // Replace with your actual token
 
       // Send the JSON to the FHIR Simplifier server
       var response = await http.post(
@@ -103,7 +111,9 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Prescription', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.teal,
       ),
+      drawer: _buildDrawer(context),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -172,19 +182,173 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _addMedicationField,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                ),
                 child: Text('Add Medication'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _savePrescription,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.blue), // Change the color here
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                child: Text('Save Prescription', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+                child: Text('Save Prescription', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.teal,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundImage: NetworkImage('https://example.com/profile_picture.png'),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Dr. Ahmed Gomaa',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+                Text(
+                  'neutrition',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home, color: Colors.teal),
+            title: Text('Home'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePagepre()), // Navigate to HomePage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.read_more_outlined, color: Colors.teal),
+            title: Text('Make Appointment'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddAppointmentPage()), // Navigate to AddTaskPage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle, color: Colors.teal),
+            title: Text('Profile'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>  DoctorProfilePage(doctorName: '', gender: '', address: '', email: '', phone: '', qualifications: '', biography: '', avatarUrl: '',)),  // Navigate to PatientsListPage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.stars_outlined, color: Colors.teal),
+            title: Text('gemini'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Geminipage ()), // Navigate to MainScreen
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.people, color: Colors.teal),
+            title: Text('Patients'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PatientsListPagepre()), // Navigate to PatientsListPage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout, color: Colors.teal),
+            title: Text('Logout'),
+            onTap: () {
+              Navigator.pop(context);
+              // Perform logout action
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Placeholder classes for navigation
+class HomePagepre extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
+      ),
+      body: Center(
+        child: Text('Home Page Content'),
+      ),
+    );
+  }
+}
+
+class AddTaskPage extends StatelessWidget {
+  final String generatedId;
+
+  AddTaskPage({required this.generatedId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Task Page'),
+      ),
+      body: Center(
+        child: Text('Add Task Page Content'),
+      ),
+    );
+  }
+}
+
+class PatientsListPagepre extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Patients List Page'),
+      ),
+      body: Center(
+        child: Text('Patients List Page Content'),
       ),
     );
   }

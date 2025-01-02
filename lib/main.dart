@@ -1,12 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:neutrition_sqlite/screens/app.dart';
-import 'package:neutrition_sqlite/screens/comines.dart';
+import 'package:neutrition_sqlite/controllers/Task_controller.dart';
 import 'package:neutrition_sqlite/screens/pateint.dart';
-import 'package:neutrition_sqlite/screens/test.dart';
-import 'package:neutrition_sqlite/tests/combined_dashboard.dart';
-import 'package:neutrition_sqlite/tests/dachbourd.dart';
-import 'package:neutrition_sqlite/tests/prescp.dart';
 
+import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:neutrition_sqlite/tests/combined_dashboard.dart';
+import 'package:neutrition_sqlite/tests/geminipage.dart';
+import 'package:neutrition_sqlite/tests/janaregs.dart';
 import 'package:neutrition_sqlite/widgets/add_task_bar.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +34,7 @@ import 'mydatabase/sqldb.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 void main()  async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.android,
@@ -45,6 +45,7 @@ void main()  async {
 
   // Set the database factory to use FFI
   databaseFactory = databaseFactoryFfi;
+  Gemini.init(apiKey:GEMINI_API);
   runApp(const MyApp());
 }
 

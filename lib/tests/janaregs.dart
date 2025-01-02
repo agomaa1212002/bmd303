@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -20,18 +19,19 @@ Future<List<String>> fetchPatientEmails() async {
   return emails;
 }
 
-class AddAppointmentPage extends StatefulWidget {
-  const AddAppointmentPage({Key? key}): super(key: key);
+class janaregs extends StatefulWidget {
+  const janaregs({Key? key}) : super(key: key);
 
   @override
-  State<AddAppointmentPage> createState() => _AddTaskPageState();
+  State<janaregs> createState() => _AddTaskPageState();
 }
 
-class _AddTaskPageState extends State<AddAppointmentPage> {
+class _AddTaskPageState extends State<janaregs> {
   final TextEditingController _Endtime = TextEditingController();
   final TextEditingController _Starttime = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   String _endTime = "9:30 PM";
   String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
@@ -40,19 +40,10 @@ class _AddTaskPageState extends State<AddAppointmentPage> {
   int _selectedColor = 0;
 
   String? _selectedEmail;
-  List<String> _emails = [];
 
   @override
   void initState() {
     super.initState();
-    _loadEmails();
-  }
-
-  void _loadEmails() async {
-    List<String> emails = await fetchPatientEmails();
-    setState(() {
-      _emails = emails;
-    });
   }
 
   @override
@@ -78,20 +69,10 @@ class _AddTaskPageState extends State<AddAppointmentPage> {
                   },
                 ),
               ),
-              DropdownButtonFormField<String>(
-                value: _selectedEmail,
-                hint: Text('Select Email'),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedEmail = value!;
-                  });
-                },
-                items: _emails.map((email) {
-                  return DropdownMenuItem<String>(
-                    value: email,
-                    child: Text(email),
-                  );
-                }).toList(),
+              MyInputField(
+                title: "Email",
+                hint: "Enter Patient Email",
+                controller: _emailController,
               ),
               Row(
                 children: [
@@ -154,11 +135,13 @@ class _AddTaskPageState extends State<AddAppointmentPage> {
                                 child: CircleAvatar(
                                   radius: 14,
                                   backgroundColor: index == 0 ? primaryClr : index == 1 ? pinkClr : Colors.yellow,
-                                  child: _selectedColor == index ? Icon(
+                                  child: _selectedColor == index
+                                      ? Icon(
                                     Icons.done,
                                     color: Colors.white,
                                     size: 16,
-                                  ) : Container(),
+                                  )
+                                      : Container(),
                                 ),
                               ),
                             );
@@ -176,7 +159,8 @@ class _AddTaskPageState extends State<AddAppointmentPage> {
   }
 
   _validateData() async {
-    if (_selectedEmail != null) {
+    if (_emailController.text.isNotEmpty) {
+      _selectedEmail = _emailController.text;
       if (_isValidTime() && _isValidDate() && await _isTimeSlotAvailable()) {
         await _addAppointmentToPatient(_selectedEmail!);
       }

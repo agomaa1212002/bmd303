@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'home_page.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:neutrition_sqlite/screens/profilepage.dart';
+import 'package:neutrition_sqlite/screens/signup.dart';
 
 
 class SignInPage extends StatefulWidget {
@@ -12,19 +13,60 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _checkCredentials() {
-    if (_emailController.text == 'ahmed@asdd.com' &&
-        _passwordController.text == '1234') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(),
-        ),
-      );
-    } else {
+  void _signIn() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid credentials')),
+        SnackBar(content: Text('Please fill in both fields')),
+      );
+      return;
+    }
+
+    try {
+      // Sign in the user using Firebase Auth
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Fetch doctor details from Firestore using email
+      DocumentSnapshot doctorSnapshot = await FirebaseFirestore.instance
+          .collection('doctors')
+          .where('email', isEqualTo: email)
+          .get()
+          .then((snapshot) => snapshot.docs.first);
+
+      if (doctorSnapshot.exists) {
+        // Pass the doctor's data to the profile page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DoctorProfilePage(
+              doctorName: doctorSnapshot['dr_firstname'] +
+                  ' ' +
+                  doctorSnapshot['dr_lastname'],
+              gender: doctorSnapshot['gender'], // Assuming gender is saved in Firestore
+              address: doctorSnapshot['address'], // Assuming address is saved in Firestore
+              email: doctorSnapshot['email'],
+              phone: '',
+              qualifications: '',
+              biography: '',
+              avatarUrl: '',
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Doctor details not found')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('the email or the password is not correct: $e')),
       );
     }
   }
@@ -34,250 +76,54 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login Page'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _checkCredentials,
-              child: Text('Hi'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  void _checkCredentials() {
-    if (_emailController.text == 'ahmed@asdd.com' &&
-        _passwordController.text == '1234') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid credentials')),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login Page'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _checkCredentials,
-              child: Text('Hi'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile Page'),
         backgroundColor: Colors.teal,
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.teal,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage('https://example.com/profile_picture.png'),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Dr. Ahmed Gomaa',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
-                  ),
-                  Text(
-                    'Cardiologist',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home, color: Colors.teal),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()), // Navigate to MainScreen
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.account_circle, color: Colors.teal),
-              title: Text('Profile'),
-              onTap: () {
-                Navigator.pop(context);
-                // Already on profile page, maybe refresh or perform another action
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, color: Colors.teal),
-              title: Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to settings page
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout, color: Colors.teal),
-              title: Text('Logout'),
-              onTap: () {
-                Navigator.pop(context);
-                // Perform logout action
-              },
-            ),
-          ],
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage('https://example.com/profile_picture.png'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Dr. Ahmed Gomaa',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.teal,
-              ),
-            ),
-            SizedBox(height: 5),
-            Text(
-              'Cardiologist',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey[700],
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.email, color: Colors.teal),
               ),
             ),
             SizedBox(height: 20),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              child: ListTile(
-                leading: Icon(Icons.email, color: Colors.teal),
-                title: Text(
-                  'ahmed@asdd.com',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.teal[900],
-                  ),
-                ),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.lock, color: Colors.teal),
               ),
+              obscureText: true,
             ),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              child: ListTile(
-                leading: Icon(Icons.phone, color: Colors.teal),
-                title: Text(
-                  '012546564546',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.teal[900],
-                  ),
-                ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _signIn,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                textStyle: TextStyle(color: Colors.white, fontSize: 18),
               ),
+              child: Text('Login'),
             ),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              child: ListTile(
-                leading: Icon(Icons.location_on, color: Colors.teal),
-                title: Text(
-                  '1234 Hospital St, 6 of October City, Country',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.teal[900],
+            SizedBox(height: 20),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DoctorSignupPage(), // Replace with your sign-up page route
                   ),
-                ),
+                );
+              },
+              child: Text(
+                "Don't have an account? Sign Up",
+                style: TextStyle(color: Colors.teal, fontSize: 16),
               ),
             ),
           ],

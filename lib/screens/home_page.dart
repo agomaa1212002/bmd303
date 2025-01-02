@@ -2,37 +2,16 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:neutrition_sqlite/screens/profilepage.dart';
 import 'package:neutrition_sqlite/screens/theme.dart';
 import 'package:neutrition_sqlite/servises/theme_servises.dart';
+
+import '../tests/geminipage.dart';
 import '../widgets/add_task_bar.dart';
 import '../widgets/botton.dart';
-
 import 'app.dart';
-
-Stream<List<Map<String, dynamic>>> _fetchAppointments(DateTime selectedDate) {
-  return FirebaseFirestore.instance.collection('patients').snapshots().map(
-        (snapshot) {
-      List<Map<String, dynamic>> appointments = [];
-      for (var patientDoc in snapshot.docs) {
-        var patientData = patientDoc.data() as Map<String, dynamic>;
-        var appointmentsSnapshot =
-        patientDoc.reference
-            .collection('appointments')
-            .where('date', isEqualTo: DateFormat.yMd().format(selectedDate))
-            .snapshots();
-        appointmentsSnapshot.listen((appointmentsSnapshot) {
-          for (var appointmentDoc in appointmentsSnapshot.docs) {
-            var appointmentData = appointmentDoc.data() as Map<String, dynamic>;
-            appointments.add(appointmentData);
-          }
-        });
-      }
-      return appointments;
-    },
-  );
-}
+import 'login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -52,23 +31,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   Stream<List<Map<String, dynamic>>> _fetchAppointments(DateTime selectedDate) {
-    return FirebaseFirestore.instance.collection('patients').snapshots().map(
-          (snapshot) {
+    return FirebaseFirestore.instance.collection('patients').snapshots().asyncMap(
+          (snapshot) async {
         List<Map<String, dynamic>> appointments = [];
         for (var patientDoc in snapshot.docs) {
-          var patientData = patientDoc.data() as Map<String, dynamic>;
-          var appointmentsSnapshot =
-          patientDoc.reference.collection('appointments').snapshots();
-          appointmentsSnapshot.listen((appointmentsSnapshot) {
-            for (var appointmentDoc in appointmentsSnapshot.docs) {
-              var appointmentData =
-              appointmentDoc.data() as Map<String, dynamic>;
-              if (DateFormat.yMd().format(appointmentData['date'].toDate()) ==
-                  DateFormat.yMd().format(_selectedDate)) {
-                appointments.add(appointmentData);
-              }
-            }
-          });
+          var appointmentsSnapshot = await patientDoc.reference
+              .collection('appointments')
+              .where('date', isEqualTo: selectedDate)
+              .get();
+          for (var appointmentDoc in appointmentsSnapshot.docs) {
+            var appointmentData = appointmentDoc.data() as Map<String, dynamic>;
+            appointments.add(appointmentData);
+          }
         }
         return appointments;
       },
@@ -125,10 +99,24 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(Icons.account_circle, color: Colors.teal),
-              title: Text('Profile'),
+              title: Text('profile'),
               onTap: () {
-                Navigator.pop(context);
-                // Already on profile page, maybe refresh or perform another action
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>DoctorProfilePage(doctorName: '', gender: '', address: '', email: '', phone: '', qualifications: '', biography: '', avatarUrl: '',)), // Navigate to MainScreen
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.stars_outlined, color: Colors.teal),
+              title: Text('gemini'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Geminipage ()), // Navigate to MainScreen
+                );
               },
             ),
             ListTile(
@@ -294,12 +282,18 @@ class _HomePageState extends State<HomePage> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(() => AddTaskPaged());
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddTaskPage(generatedId: '',)),
+              );
             },
             child: Mybutton(
               label: "Appointment",
               onTap: () {
-                Get.to(() => AddTaskPaged());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddAppointmentPage()),
+                );
               },
             ),
           ),

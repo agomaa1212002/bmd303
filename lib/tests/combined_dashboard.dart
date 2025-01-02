@@ -1,12 +1,26 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_ml_kit/google_ml_kit.dart'; // Import the ML Kit package
+import 'package:neutrition_sqlite/tests/prescp.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+
+import '../screens/app.dart';
+import '../screens/home_page.dart';
+import '../screens/login.dart';
+import '../screens/pateint.dart';
+import '../screens/profilepage.dart';
+import '../screens/t_plans_mean.screen.dart';
+
+
+import '../widgets/add_task_bar.dart';
+import 'geminipage.dart';
+import 'ocrveiw.dart';
 
 class DashboardPage extends StatelessWidget {
   final Map<String, String> patientData;
@@ -18,6 +32,7 @@ class DashboardPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('${patientData['username']}\'s Dashboard'),
+        backgroundColor: Colors.teal,
         actions: [
           IconButton(
             icon: Icon(Icons.brightness_6),
@@ -27,10 +42,9 @@ class DashboardPage extends StatelessWidget {
           ),
         ],
       ),
+      drawer: _buildDrawer(context),
       body: Row(
         children: [
-          // Sidebar
-          CollapsibleSidebar(),
           // Main Dashboard
           Expanded(
             child: Padding(
@@ -60,9 +74,9 @@ class DashboardPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      QuickStat(icon: Icons.local_fire_department, label: 'Calories burned'),
-                      QuickStat(icon: Icons.directions_walk, label: 'Steps'),
-                      QuickStat(icon: Icons.map, label: 'Distance'),
+                      QuickStat(icon: Icons.scanner_outlined, label: 'OCR'),
+                      QuickStat(icon: Icons.directions_walk, label: 'Plans', patientId: patientData['id'], isPlans: true),
+                      QuickStat(icon: Icons.medical_information, label: 'Prescription', patientId: patientData['id'], isPrescription: true),
                       QuickStat(icon: Icons.camera_alt, label: 'Add Photo', patientId: patientData['id']),
                     ],
                   ),
@@ -260,6 +274,108 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.teal,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundImage: NetworkImage('https://example.com/profile_picture.png'),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Hi Doctor',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+                Text(
+                  'neutrition',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home, color: Colors.teal),
+            title: Text('Home'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()), // Navigate to HomePage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.stars_outlined, color: Colors.teal),
+            title: Text('AI'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Geminipage()), // Navigate to HomePage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.read_more_outlined, color: Colors.teal),
+            title: Text('Make Appointment'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddAppointmentPage()), // Navigate to AddTaskPage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle, color: Colors.teal),
+            title: Text('Profile'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>DoctorProfilePage(doctorName: '', gender: '', address: '', email: '', phone: '', qualifications: '', biography: '', avatarUrl: '',)),  // Navigate to PatientsListPage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.people, color: Colors.teal),
+            title: Text('Patients'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PatientsListPage()), // Navigate to PatientsListPage
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout, color: Colors.teal),
+            title: Text('Logout'),
+            onTap: () {
+              Navigator.pop(context);
+              // Perform logout action
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   List<ChartData> getChartData() {
     final List<ChartData> chartData = [
       ChartData('Protein', 25),
@@ -269,69 +385,6 @@ class DashboardPage extends StatelessWidget {
       ChartData('Sugar', 5)
     ];
     return chartData;
-  }
-}
-
-class CollapsibleSidebar extends StatefulWidget {
-  @override
-  _CollapsibleSidebarState createState() => _CollapsibleSidebarState();
-}
-
-class _CollapsibleSidebarState extends State<CollapsibleSidebar> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _widthAnimation;
-  bool _isCollapsed = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _widthAnimation = Tween<double>(begin: 200, end: 60).animate(_controller);
-  }
-
-  void _toggleSidebar() {
-    setState(() {
-      _isCollapsed = !_isCollapsed;
-      _isCollapsed ? _controller.reverse() : _controller.forward();
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Container(
-          width: _widthAnimation.value,
-          color: Colors.black87,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                icon: Icon(_isCollapsed ? Icons.menu : Icons.arrow_back),
-                color: Colors.white,
-                onPressed: _toggleSidebar,
-              ),
-              SidebarItem(icon: Icons.home, text: 'Dashboard', isSelected: true),
-              SidebarItem(icon: Icons.person, text: 'Profile'),
-              SidebarItem(icon: Icons.directions_run, text: 'Exercise'),
-              SidebarItem(icon: Icons.settings, text: 'Settings'),
-              SidebarItem(icon: Icons.history, text: 'History'),
-              SidebarItem(icon: Icons.logout, text: 'SignOut'),
-            ],
-          ),
-        );
-      },
-    );
   }
 }
 
@@ -358,8 +411,10 @@ class QuickStat extends StatefulWidget {
   final IconData icon;
   final String label;
   final String? patientId; // Optional patientId for adding photos
+  final bool isPrescription; // Optional flag for prescription navigation
+  final bool isPlans; // Optional flag for plans navigation
 
-  QuickStat({required this.icon, required this.label, this.patientId});
+  QuickStat({required this.icon, required this.label, this.patientId, this.isPrescription = false, this.isPlans = false});
 
   @override
   _QuickStatState createState() => _QuickStatState();
@@ -407,8 +462,40 @@ class _QuickStatState extends State<QuickStat> with SingleTickerProviderStateMix
     }
   }
 
+  Future<void> _performOCR() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      final inputImage = InputImage.fromFilePath(pickedFile.path);
+      final textRecognizer = GoogleMlKit.vision.textRecognizer();
+      final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+      await textRecognizer.close();
+
+      String extractedText = recognizedText.text;
+      print('Extracted Text: $extractedText');
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OcrResultPage(extractedText: extractedText),
+        ),
+      );
+    }
+  }
+
   void _handleTap() {
-    if (widget.patientId != null) {
+    if (widget.label == 'OCR') {
+      _performOCR();
+    } else if (widget.isPrescription) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PrescriptionScreen()),
+      );
+    } else if (widget.isPlans) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TreatmentPlan()),
+      );
+    } else if (widget.patientId != null) {
       _pickImage();
     } else {
       _controller.forward().then((_) => _controller.reverse());
@@ -602,12 +689,12 @@ class ThemeService with ChangeNotifier {
 
 class Themes {
   static final light = ThemeData(
-    primarySwatch: Colors.blue,
+    primarySwatch: Colors.teal,
     brightness: Brightness.light,
   );
 
   static final dark = ThemeData(
-    primarySwatch: Colors.blue,
+    primarySwatch: Colors.teal,
     brightness: Brightness.dark,
   );
 }
